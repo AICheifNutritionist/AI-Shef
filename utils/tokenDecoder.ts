@@ -31,21 +31,22 @@ export const decodeKeycloakToken = (token: string): KeycloakTokenPayload | null 
 
 const generateGravatarUrl = (email?: string): string | undefined => {
   if (!email) return undefined;
-  
+
   const hash = email.toLowerCase().trim();
   return `https://www.gravatar.com/avatar/${hash}?d=identicon&s=200`;
 };
 
 export const getUserFromToken = (token: string) => {
   const decoded = decodeKeycloakToken(token);
-  
+
   if (!decoded) return null;
 
-  const picture = decoded.picture || 
-                  decoded.avatar || 
-                  decoded.profile_picture || 
-                  decoded.image ||
-                  generateGravatarUrl(decoded.email);
+  const picture =
+    decoded.picture ||
+    decoded.avatar ||
+    decoded.profile_picture ||
+    decoded.image ||
+    generateGravatarUrl(decoded.email);
 
   return {
     id: decoded.sub,

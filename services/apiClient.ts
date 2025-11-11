@@ -30,7 +30,7 @@ apiClient.interceptors.request.use(
 
     return config;
   },
-  (error) => {
+  error => {
     return Promise.reject(error);
   }
 );
@@ -39,7 +39,7 @@ apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
     return response;
   },
-  async (error) => {
+  async error => {
     const originalRequest = error.config;
 
     if (error.response?.status === 401 && !originalRequest._retry) {
@@ -48,7 +48,7 @@ apiClient.interceptors.response.use(
       try {
         await keycloak.updateToken(30);
         tokenStorage.setToken(keycloak.token!, keycloak.refreshToken);
-        
+
         originalRequest.headers.Authorization = `Bearer ${keycloak.token}`;
         return apiClient(originalRequest);
       } catch (refreshError) {

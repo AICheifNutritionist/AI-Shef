@@ -58,7 +58,15 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [ingredients, mealType, cookingTime, preferences, dietaryNeeds, willingToShop, shoppingBudget]);
+  }, [
+    ingredients,
+    mealType,
+    cookingTime,
+    preferences,
+    dietaryNeeds,
+    willingToShop,
+    shoppingBudget,
+  ]);
 
   if (authLoading) {
     return (
@@ -71,9 +79,9 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
       <Header />
-      
-      <main className="container mx-auto p-4 md:p-8"> 
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8 space-y-8">  
+
+      <main className="container mx-auto p-4 md:p-8">
+        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8 space-y-8">
           <div className="grid md:grid-cols-2 gap-8">
             <IngredientInput ingredients={ingredients} setIngredients={setIngredients} />
 
@@ -89,7 +97,7 @@ const App: React.FC = () => {
             />
           </div>
 
-          <BudgetInput 
+          <BudgetInput
             willingToShop={willingToShop}
             setWillingToShop={setWillingToShop}
             shoppingBudget={shoppingBudget}
@@ -108,14 +116,22 @@ const App: React.FC = () => {
             </button>
           </div>
 
-          {error && <div className="text-center text-red-600 bg-red-100 p-4 rounded-lg">{error}</div>}
+          {error && (
+            <div className="text-center text-red-600 bg-red-100 p-4 rounded-lg">{error}</div>
+          )}
         </div>
 
-        {isLoading && <div className="max-w-4xl mx-auto"><Loader /></div>}
+        {isLoading && (
+          <div className="max-w-4xl mx-auto">
+            <Loader />
+          </div>
+        )}
 
         {recipes && !isLoading && (
           <div className="mt-8 animate-fade-in max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6 text-center">Ваши персональные рецепты</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6 text-center">
+              Ваши персональные рецепты
+            </h2>
 
             <div className="flex overflow-x-auto space-x-8 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-green-600 scrollbar-track-green-100">
               {recipes.map((recipe, index) => (
@@ -125,10 +141,12 @@ const App: React.FC = () => {
               ))}
             </div>
 
-            <p className="text-center text-gray-500 mt-2 text-sm">Прокрутите вправо, чтобы увидеть больше вариантов →</p>
+            <p className="text-center text-gray-500 mt-2 text-sm">
+              Прокрутите вправо, чтобы увидеть больше вариантов →
+            </p>
           </div>
         )}
-        
+
         {!recipes && !isLoading && (
           <div className="text-center py-16 text-gray-400 max-w-4xl mx-auto">
             <p className="text-xl">Ваши кулинарные шедевры ждут...</p>
@@ -136,7 +154,6 @@ const App: React.FC = () => {
             <p>Добавьте ингредиенты, и наш AI-шеф предложит вам несколько идей!</p>
           </div>
         )}
-
       </main>
 
       <footer className="text-center py-6 text-sm text-gray-500">

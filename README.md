@@ -10,11 +10,23 @@ View your app in AI Studio: https://ai.studio/apps/drive/1u_FB_Fq67neyJLAmoX7-za
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
-
+**Prerequisites:** Node.js
 
 1. Install dependencies:
    `npm install`
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+## Code Formatting
+
+Проект использует Prettier для автоматического форматирования кода.
+
+### Доступные команды:
+
+- `npm run format` - отформатировать все файлы проекта
+- `npm run format:check` - проверить форматирование без изменений
+
+### Pre-commit хук
+
+При каждом коммите автоматически запускается форматирование измененных файлов через husky + lint-staged. Для поддержания единого стиля кода.

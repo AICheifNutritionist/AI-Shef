@@ -6,14 +6,17 @@ interface IngredientInputProps {
   setIngredients: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export const IngredientInput: React.FC<IngredientInputProps> = ({ ingredients, setIngredients }) => {
+export const IngredientInput: React.FC<IngredientInputProps> = ({
+  ingredients,
+  setIngredients,
+}) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleAddIngredient = () => {
     if (!inputValue.trim()) return;
 
     const existingIngredientsLower = ingredients.map(i => i.toLowerCase());
-    
+
     const newIngredients = inputValue
       .split(',')
       .map(item => item.trim())
@@ -24,14 +27,14 @@ export const IngredientInput: React.FC<IngredientInputProps> = ({ ingredients, s
       const uniqueNewIngredients = [...new Set(newIngredients)];
       setIngredients(prevIngredients => [...prevIngredients, ...uniqueNewIngredients]);
     }
-    
+
     setInputValue('');
   };
 
   const handleRemoveIngredient = (ingredientToRemove: string) => {
     setIngredients(ingredients.filter(ingredient => ingredient !== ingredientToRemove));
   };
-  
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -46,7 +49,7 @@ export const IngredientInput: React.FC<IngredientInputProps> = ({ ingredients, s
         <input
           type="text"
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={e => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="хлеб, помидоры, сыр..."
           className="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-shadow"
@@ -62,9 +65,16 @@ export const IngredientInput: React.FC<IngredientInputProps> = ({ ingredients, s
       </div>
       <div className="flex flex-wrap gap-2 pt-2">
         {ingredients.map((ingredient, index) => (
-          <div key={index} className="flex items-center gap-2 bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full animate-fade-in">
+          <div
+            key={index}
+            className="flex items-center gap-2 bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full animate-fade-in"
+          >
             <span>{ingredient}</span>
-            <button onClick={() => handleRemoveIngredient(ingredient)} className="text-green-600 hover:text-green-800" aria-label={`Удалить ${ingredient}`}>
+            <button
+              onClick={() => handleRemoveIngredient(ingredient)}
+              className="text-green-600 hover:text-green-800"
+              aria-label={`Удалить ${ingredient}`}
+            >
               <XCircle className="w-4 h-4" />
             </button>
           </div>
