@@ -4,10 +4,16 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
+    
+    process.env.NODE_OPTIONS = '--max-http-header-size=32768';
+    
     return {
       server: {
         port: 3000,
         host: '0.0.0.0',
+        hmr: {
+          clientPort: 3000,
+        },
       },
       plugins: [react()],
       define: {
@@ -18,6 +24,11 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
-      }
+      },
+      optimizeDeps: {
+        esbuildOptions: {
+          target: 'esnext',
+        },
+      },
     };
 });

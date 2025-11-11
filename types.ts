@@ -1,4 +1,3 @@
-
 export interface RecipeRequest {
   ingredients: string[];
   mealType: string;
