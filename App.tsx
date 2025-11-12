@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { IngredientInput } from './components/IngredientInput';
 import { RecipeOptions } from './components/RecipeOptions';
-import { RecipeDisplay } from './components/RecipeDisplay';
+import { RecipeCarousel } from './components/RecipeCarousel';
 import { Loader } from './components/Loader';
 import type { Recipe } from './types';
 import { ChefHat } from './components/Icons';
@@ -14,7 +14,7 @@ import { useGenerateRecipes } from './hooks/useRecipes';
 const App: React.FC = () => {
   const { isLoading: authLoading } = useAuth();
   // TODO: переписать это на работу с формой и обработать ошибки
-  // Убрать предустановки в словари
+  // TODO: Убрать предустановки в словари
   const [ingredients, setIngredients] = useState<string[]>(['куриная грудка', 'рис', 'брокколи']);
   const [mealType, setMealType] = useState<string>('Ужин');
   const [cookingTime, setCookingTime] = useState<number>(30);
@@ -97,29 +97,16 @@ const App: React.FC = () => {
         </div>
 
         {isPending && (
-          <div className="max-w-4xl mx-auto">
-            <Loader />
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="w-[400px] h-[400px] bg-white rounded-lg p-8 shadow-xl">
+              <Loader />
+              <p className="text-center text-gray-600 mt-4 font-medium">Генерируем рецепты...</p>
+            </div>
           </div>
         )}
 
         {recipes && !isPending && (
-          <div className="mt-8 animate-fade-in max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6 text-center">
-              Ваши персональные рецепты
-            </h2>
-
-            <div className="flex overflow-x-auto space-x-8 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-green-600 scrollbar-track-green-100">
-              {recipes.map((recipe, index) => (
-                <div key={index} className="flex-shrink-0 w-full snap-center">
-                  <RecipeDisplay recipe={recipe} availableIngredients={ingredients} />
-                </div>
-              ))}
-            </div>
-
-            <p className="text-center text-gray-500 mt-2 text-sm">
-              Прокрутите вправо, чтобы увидеть больше вариантов →
-            </p>
-          </div>
+          <RecipeCarousel recipes={recipes} availableIngredients={ingredients} />
         )}
 
         {!recipes && !isPending && (

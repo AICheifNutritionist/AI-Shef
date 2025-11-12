@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Recipe } from '../types';
-import { Clock, DollarSign, HeartPulse, Utensils, ShoppingCart, CheckCircle } from './Icons';
+import { Clock, DollarSign, Fire, Restaurant, ShoppingCart, CheckCircle } from './Icons';
 
 interface RecipeDisplayProps {
   recipe: Recipe;
@@ -41,13 +41,13 @@ export const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
           />
 
           <InfoCard
-            icon={<HeartPulse className="w-8 h-8" />}
+            icon={<Fire className="w-8 h-8" />}
             label="Калории"
             value={recipe.nutrition.calories}
           />
 
           <InfoCard
-            icon={<Utensils className="w-8 h-8" />}
+            icon={<Restaurant className="w-8 h-8" />}
             label="Белки"
             value={recipe.nutrition.protein}
           />
