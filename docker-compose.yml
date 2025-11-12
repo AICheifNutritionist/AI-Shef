@@ -1,0 +1,16 @@
+services:
+  ai-chef-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_KEYCLOAK_URL: ${VITE_KEYCLOAK_URL}
+        VITE_KEYCLOAK_REALM: ${VITE_KEYCLOAK_REALM}
+        VITE_KEYCLOAK_CLIENT_ID: ${VITE_KEYCLOAK_CLIENT_ID}
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+    container_name: ai-chef-frontend
+    ports:
+      - "3500:3000"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
