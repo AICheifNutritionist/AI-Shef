@@ -2,9 +2,11 @@ import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 
 import keycloak from '../config/keycloak';
 import tokenStorage from '../utils/tokenStorage';
 
+const API_PREFIX = '/webhook';
+
 const apiClient: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 30000,
+  timeout: 60000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -12,6 +14,10 @@ const apiClient: AxiosInstance = axios.create({
 
 apiClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
+    if (config.url && !config.url.startsWith('http')) {
+      config.url = `${API_PREFIX}${config.url}`;
+    }
+
     if (keycloak.isTokenExpired()) {
       try {
         await keycloak.updateToken(30);

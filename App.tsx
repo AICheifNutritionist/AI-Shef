@@ -1,18 +1,20 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { IngredientInput } from './components/IngredientInput';
 import { RecipeOptions } from './components/RecipeOptions';
 import { RecipeDisplay } from './components/RecipeDisplay';
 import { Loader } from './components/Loader';
-import { generateRecipeAndImage } from './services/geminiService';
-import type { Recipe, RecipeRequest } from './types';
+import type { Recipe } from './types';
 import { ChefHat } from './components/Icons';
 import { BudgetInput } from './components/BudgetInput';
 import { useAuth } from './contexts/AuthContext';
+import { useGenerateRecipes } from './hooks/useRecipes';
 
 // TODO: вынести в page м перенести сюда провайдеры
 const App: React.FC = () => {
   const { isLoading: authLoading } = useAuth();
+  // TODO: переписать это на работу с формой и обработать ошибки
+  // Убрать предустановки в словари
   const [ingredients, setIngredients] = useState<string[]>(['куриная грудка', 'рис', 'брокколи']);
   const [mealType, setMealType] = useState<string>('Ужин');
   const [cookingTime, setCookingTime] = useState<number>(30);
@@ -21,21 +23,14 @@ const App: React.FC = () => {
   const [willingToShop, setWillingToShop] = useState<boolean>(true);
   const [shoppingBudget, setShoppingBudget] = useState<number>(500);
 
-  const [recipes, setRecipes] = useState<Recipe[] | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const { mutate: generateRecipes, data: recipes, isPending, error } = useGenerateRecipes();
 
-  const handleGenerateRecipe = useCallback(async () => {
+  const handleGenerateRecipe = () => {
     if (ingredients.length === 0) {
-      setError('Пожалуйста, добавьте хотя бы один ингредиент.');
       return;
     }
 
-    setIsLoading(true);
-    setError(null);
-    setRecipes(null);
-
-    const request: RecipeRequest = {
+    generateRecipes({
       ingredients,
       mealType,
       cookingTime,
@@ -43,30 +38,8 @@ const App: React.FC = () => {
       dietaryNeeds,
       willingToShop,
       shoppingBudget,
-    };
-
-    try {
-      const generatedRecipes = await generateRecipeAndImage(request);
-      setRecipes(generatedRecipes);
-    } catch (err) {
-      console.error(err);
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже.');
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  }, [
-    ingredients,
-    mealType,
-    cookingTime,
-    preferences,
-    dietaryNeeds,
-    willingToShop,
-    shoppingBudget,
-  ]);
+    });
+  };
 
   if (authLoading) {
     return (
@@ -107,27 +80,29 @@ const App: React.FC = () => {
           <div className="text-center">
             <button
               onClick={handleGenerateRecipe}
-              disabled={isLoading || ingredients.length === 0}
+              disabled={isPending || ingredients.length === 0}
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-600 text-white font-bold text-lg rounded-full shadow-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300"
             >
               <ChefHat className="w-6 h-6" />
 
-              {isLoading ? 'Творим волшебство...' : 'Создать 3 рецепта'}
+              {isPending ? 'Творим волшебство...' : 'Создать 3 рецепта'}
             </button>
           </div>
 
           {error && (
-            <div className="text-center text-red-600 bg-red-100 p-4 rounded-lg">{error}</div>
+            <div className="text-center text-red-600 bg-red-100 p-4 rounded-lg">
+              {error.message || 'Произошла ошибка при генерации рецептов'}
+            </div>
           )}
         </div>
 
-        {isLoading && (
+        {isPending && (
           <div className="max-w-4xl mx-auto">
             <Loader />
           </div>
         )}
 
-        {recipes && !isLoading && (
+        {recipes && !isPending && (
           <div className="mt-8 animate-fade-in max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6 text-center">
               Ваши персональные рецепты
@@ -147,7 +122,7 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {!recipes && !isLoading && (
+        {!recipes && !isPending && (
           <div className="text-center py-16 text-gray-400 max-w-4xl mx-auto">
             <p className="text-xl">Ваши кулинарные шедевры ждут...</p>
 
