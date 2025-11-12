@@ -1,0 +1,28 @@
+# Dependencies
+node_modules
+npm-debug.log
+
+# Build output
+dist
+build
+
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.*.local
+.env.dev
+
+# Misc
+.DS_Store
+*.log
+coverage
+.husky
