@@ -2,9 +2,11 @@ import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 
 import keycloak from '../config/keycloak';
 import tokenStorage from '../utils/tokenStorage';
 
+const API_PREFIX = '/webhook';
+
 const apiClient: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 30000,
+  timeout: 60000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -12,13 +14,19 @@ const apiClient: AxiosInstance = axios.create({
 
 apiClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
+    if (config.url && !config.url.startsWith('http')) {
+      config.url = `${API_PREFIX}${config.url}`;
+    }
+
     if (keycloak.isTokenExpired()) {
       try {
         await keycloak.updateToken(30);
+
         tokenStorage.setToken(keycloak.token!, keycloak.refreshToken);
       } catch (error) {
         console.error('Failed to refresh token', error);
         keycloak.logout();
+
         return Promise.reject(error);
       }
     }
@@ -30,7 +38,7 @@ apiClient.interceptors.request.use(
 
     return config;
   },
-  (error) => {
+  error => {
     return Promise.reject(error);
   }
 );
@@ -39,8 +47,37 @@ apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
     return response;
   },
-  async (error) => {
+  async error => {
     const originalRequest = error.config;
+
+    if (error.response?.data?.error) {
+      console.log({ error });
+      const errorMessage = error.response.data.error;
+      const customError = new Error(errorMessage);
+
+      (customError as any).response = error.response;
+      (customError as any).status = error.response.status;
+
+      if (error.response.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+
+        try {
+          await keycloak.updateToken(30);
+          tokenStorage.setToken(keycloak.token!, keycloak.refreshToken);
+
+          originalRequest.headers.Authorization = `Bearer ${keycloak.token}`;
+
+          return apiClient(originalRequest);
+        } catch (refreshError) {
+          console.error('Token refresh failed', refreshError);
+          keycloak.logout();
+
+          return Promise.reject(refreshError);
+        }
+      }
+
+      return Promise.reject(customError);
+    }
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
@@ -48,12 +85,14 @@ apiClient.interceptors.response.use(
       try {
         await keycloak.updateToken(30);
         tokenStorage.setToken(keycloak.token!, keycloak.refreshToken);
-        
+
         originalRequest.headers.Authorization = `Bearer ${keycloak.token}`;
+
         return apiClient(originalRequest);
       } catch (refreshError) {
         console.error('Token refresh failed', refreshError);
         keycloak.logout();
+
         return Promise.reject(refreshError);
       }
     }

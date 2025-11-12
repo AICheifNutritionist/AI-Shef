@@ -30,5 +30,5 @@ export interface Recipe {
   ingredients: Ingredient[];
   instructions: string[];
   kitchenware: string[];
-  imageUrl: string;
+  photo: string;
 }
