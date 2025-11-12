@@ -4,8 +4,6 @@ export const ChefHat: React.FC<{ className?: string }> = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}
-    width="24"
-    height="24"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -13,11 +11,8 @@ export const ChefHat: React.FC<{ className?: string }> = ({ className }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    <path d="M5 21a2 2 0 0 1-2-2v-4.27a2 2 0 0 1 .58-1.41l5.82-5.82a2 2 0 0 1 2.83 0l5.82 5.82a2 2 0 0 1 .58 1.41V19a2 2 0 0 1-2 2Z" />
-    <path d="M5 13V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4" />
-    <path d="M12 2v2" />
-    <path d="M18.88 4.12a2.83 2.83 0 1 1-4 4" />
-    <path d="M5.12 4.12a2.83 2.83 0 1 0 4 4" />
+    <path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z" />
+    <line x1="6" y1="17" x2="18" y2="17" />
   </svg>
 );
 
