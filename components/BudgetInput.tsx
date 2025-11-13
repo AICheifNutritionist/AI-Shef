@@ -18,8 +18,7 @@ export const BudgetInput: React.FC<BudgetInputProps> = props => {
             htmlFor="willing-to-shop"
             className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-gray-700 leading-tight"
           >
-            <span className="hidden sm:inline">Готовы заказать недостающие продукты?</span>
-            <span className="sm:hidden">Докупить продукты?</span>
+            Готовы заказать недостающие продукты?
           </label>
 
           <div
@@ -43,11 +42,8 @@ export const BudgetInput: React.FC<BudgetInputProps> = props => {
         </div>
 
         <p className="text-[10px] sm:text-xs md:text-sm text-gray-500 mt-1.5 sm:mt-2 leading-tight">
-          <span className="hidden sm:inline">
-            AI-шеф сможет предложить более интересные рецепты, если ему можно добавить 1-2 новых
-            ингредиента.
-          </span>
-          <span className="sm:hidden">AI предложит больше вариантов</span>
+          AI-шеф сможет предложить более интересные рецепты, если ему можно добавить 1-2 новых
+          ингредиента.
         </p>
       </div>
 

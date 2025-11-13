@@ -10,7 +10,7 @@ export const UserProfile: React.FC = () => {
     <div className="flex items-center gap-1.5 sm:gap-2 md:gap-4">
       {user && (
         <div
-          className="relative hidden sm:block"
+          className="relative"
           onMouseEnter={() => setShowTooltip(true)}
           onMouseLeave={() => setShowTooltip(false)}
         >
