@@ -44,7 +44,7 @@ export const IngredientInput: React.FC<IngredientInputProps> = ({
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold text-gray-700">Что в вашем холодильнике?</h2>
+      <h2 className="text-lg md:text-xl font-semibold text-gray-700">Что в вашем холодильнике?</h2>
       <div className="flex gap-2">
         <input
           type="text"
@@ -52,11 +52,11 @@ export const IngredientInput: React.FC<IngredientInputProps> = ({
           onChange={e => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="хлеб, помидоры, сыр..."
-          className="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-shadow"
+          className="flex-grow p-3 md:p-3 text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-shadow"
         />
         <button
           onClick={handleAddIngredient}
-          className="flex-shrink-0 p-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400"
+          className="flex-shrink-0 p-3 md:p-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400 min-w-[48px]"
           disabled={!inputValue.trim()}
           aria-label="Добавить ингредиенты"
         >
@@ -67,15 +67,15 @@ export const IngredientInput: React.FC<IngredientInputProps> = ({
         {ingredients.map((ingredient, index) => (
           <div
             key={index}
-            className="flex items-center gap-2 bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full animate-fade-in"
+            className="flex items-center gap-2 bg-green-100 text-green-800 text-sm md:text-sm font-medium px-3 py-2 rounded-full animate-fade-in"
           >
             <span>{ingredient}</span>
             <button
               onClick={() => handleRemoveIngredient(ingredient)}
-              className="text-green-600 hover:text-green-800"
+              className="text-green-600 hover:text-green-800 p-0.5"
               aria-label={`Удалить ${ingredient}`}
             >
-              <XCircle className="w-4 h-4" />
+              <XCircle className="w-4 h-4 md:w-5 md:h-5" />
             </button>
           </div>
         ))}

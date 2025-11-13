@@ -4,7 +4,6 @@ import { IngredientInput } from './components/IngredientInput';
 import { RecipeOptions } from './components/RecipeOptions';
 import { RecipeCarousel } from './components/RecipeCarousel';
 import { Loader } from './components/Loader';
-import type { Recipe } from './types';
 import { ChefHat } from './components/Icons';
 import { BudgetInput } from './components/BudgetInput';
 import { useAuth } from './contexts/AuthContext';
@@ -81,9 +80,9 @@ const App: React.FC = () => {
             <button
               onClick={handleGenerateRecipe}
               disabled={isPending || ingredients.length === 0}
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-600 text-white font-bold text-lg rounded-full shadow-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300"
+              className="inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-bold text-base md:text-lg rounded-full shadow-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300 w-full sm:w-auto"
             >
-              <ChefHat className="w-6 h-6" />
+              <ChefHat className="w-5 h-5 md:w-6 md:h-6" />
 
               {isPending ? 'Творим волшебство...' : 'Создать 3 рецепта'}
             </button>
@@ -97,8 +96,8 @@ const App: React.FC = () => {
         </div>
 
         {isPending && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="w-[400px] h-[400px] bg-white rounded-lg p-8 shadow-xl">
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="w-full max-w-md aspect-square bg-white rounded-lg p-6 md:p-8 shadow-xl">
               <Loader />
               <p className="text-center text-gray-600 mt-4 font-medium">Генерируем рецепты...</p>
             </div>
@@ -110,15 +109,17 @@ const App: React.FC = () => {
         )}
 
         {!recipes && !isPending && (
-          <div className="text-center py-16 text-gray-400 max-w-4xl mx-auto">
-            <p className="text-xl">Ваши кулинарные шедевры ждут...</p>
+          <div className="text-center py-12 md:py-16 text-gray-400 max-w-4xl mx-auto px-4">
+            <p className="text-lg md:text-xl mb-2">Ваши кулинарные шедевры ждут...</p>
 
-            <p>Добавьте ингредиенты, и наш AI-шеф предложит вам несколько идей!</p>
+            <p className="text-sm md:text-base">
+              Добавьте ингредиенты, и наш AI-шеф предложит вам несколько идей!
+            </p>
           </div>
         )}
       </main>
 
-      <footer className="text-center py-6 text-sm text-gray-500">
+      <footer className="text-center py-4 md:py-6 text-xs md:text-sm text-gray-500 px-4">
         <p>Работает на Gemini. Разработано ведущим фронтенд-инженером мирового класса.</p>
       </footer>
     </div>

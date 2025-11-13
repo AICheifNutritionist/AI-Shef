@@ -38,14 +38,14 @@ export const Avatar: React.FC<AvatarProps> = ({ picture, name, username, classNa
       <img
         src={picture}
         alt={name || username || 'User'}
-        className={`w-10 h-10 rounded-full object-cover cursor-pointer hover:ring-2 hover:ring-green-500 transition-all ${className}`}
+        className={`w-9 h-9 md:w-10 md:h-10 rounded-full object-cover cursor-pointer hover:ring-2 hover:ring-green-500 transition-all ${className}`}
       />
     );
   }
 
   return (
     <div
-      className={`w-10 h-10 rounded-full ${getAvatarColor(username)} flex items-center justify-center text-white font-semibold text-sm cursor-pointer hover:ring-2 hover:ring-green-500 transition-all ${className}`}
+      className={`w-9 h-9 md:w-10 md:h-10 rounded-full ${getAvatarColor(username)} flex items-center justify-center text-white font-semibold text-xs md:text-sm cursor-pointer hover:ring-2 hover:ring-green-500 transition-all ${className}`}
     >
       {getInitials(name, username)}
     </div>

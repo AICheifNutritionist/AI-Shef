@@ -11,21 +11,24 @@ export const BudgetInput: React.FC<BudgetInputProps> = props => {
   const { willingToShop, setWillingToShop, shoppingBudget, setShoppingBudget } = props;
 
   return (
-    <div className="bg-gray-100 p-6 rounded-lg space-y-4 border border-gray-200">
+    <div className="bg-gray-100 p-4 md:p-6 rounded-lg space-y-4 border border-gray-200">
       <div>
-        <div className="flex items-center justify-between">
-          <label htmlFor="willing-to-shop" className="text-lg font-semibold text-gray-700">
+        <div className="flex items-center justify-between gap-3">
+          <label
+            htmlFor="willing-to-shop"
+            className="text-sm md:text-base lg:text-lg font-semibold text-gray-700"
+          >
             Готовы заказать недостающие продукты?
           </label>
 
           <div
             onClick={() => setWillingToShop(!willingToShop)}
-            className={`relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer transition-colors ${willingToShop ? 'bg-green-600' : 'bg-gray-300'}`}
+            className={`relative inline-flex items-center h-7 md:h-8 rounded-full w-12 md:w-14 cursor-pointer transition-colors flex-shrink-0 ${willingToShop ? 'bg-green-600' : 'bg-gray-300'}`}
             role="switch"
             aria-checked={willingToShop}
           >
             <span
-              className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${willingToShop ? 'translate-x-6' : 'translate-x-1'}`}
+              className={`inline-block w-5 md:w-6 h-5 md:h-6 transform bg-white rounded-full transition-transform ${willingToShop ? 'translate-x-6 md:translate-x-7' : 'translate-x-1'}`}
             />
           </div>
 
@@ -38,7 +41,7 @@ export const BudgetInput: React.FC<BudgetInputProps> = props => {
           />
         </div>
 
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-xs md:text-sm text-gray-500 mt-2">
           AI-шеф сможет предложить более интересные рецепты, если ему можно добавить 1-2 новых
           ингредиента.
         </p>
@@ -48,7 +51,7 @@ export const BudgetInput: React.FC<BudgetInputProps> = props => {
         <div className="animate-fade-in">
           <label
             htmlFor="shopping-budget"
-            className="block text-lg font-semibold text-gray-700 mb-2"
+            className="block text-sm md:text-base lg:text-lg font-semibold text-gray-700 mb-3"
           >
             Макс. бюджет на докупку:{' '}
             <span className="text-green-600 font-bold">{shoppingBudget} руб.</span>
@@ -62,7 +65,7 @@ export const BudgetInput: React.FC<BudgetInputProps> = props => {
             step="50"
             value={shoppingBudget}
             onChange={e => setShoppingBudget(Number(e.target.value))}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
+            className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
           />
         </div>
       )}

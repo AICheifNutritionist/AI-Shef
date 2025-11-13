@@ -7,7 +7,7 @@ export const UserProfile: React.FC = () => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-2 md:gap-4">
       {user && (
         <div
           className="relative"
@@ -17,7 +17,7 @@ export const UserProfile: React.FC = () => {
           <Avatar picture={user.picture} name={user.name} username={user.username} />
 
           {showTooltip && (
-            <div className="absolute right-0 top-12 bg-gray-800 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap z-50 shadow-lg">
+            <div className="absolute right-0 top-12 md:top-14 bg-gray-800 text-white px-3 py-2 rounded-lg text-xs md:text-sm whitespace-nowrap z-50 shadow-lg">
               <div className="font-medium">{user.name || user.username || 'Пользователь'}</div>
 
               {user.email && <div className="text-xs text-gray-300">{user.email}</div>}
@@ -30,7 +30,7 @@ export const UserProfile: React.FC = () => {
 
       <button
         onClick={logout}
-        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
+        className="px-3 md:px-4 py-2 md:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs md:text-sm font-medium min-h-[40px]"
       >
         Выйти
       </button>
