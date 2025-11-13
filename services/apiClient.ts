@@ -18,7 +18,8 @@ apiClient.interceptors.request.use(
       config.url = `${API_PREFIX}${config.url}`;
     }
 
-    if (keycloak.isTokenExpired()) {
+    // Only check token expiry if keycloak is authenticated
+    if (keycloak.authenticated && keycloak.isTokenExpired && keycloak.isTokenExpired()) {
       try {
         await keycloak.updateToken(30);
 
@@ -61,6 +62,32 @@ apiClient.interceptors.response.use(
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
 
+        // Only try Keycloak token refresh if keycloak is authenticated
+        if (keycloak.authenticated) {
+          try {
+            await keycloak.updateToken(30);
+            tokenStorage.setToken(keycloak.token!, keycloak.refreshToken);
+
+            originalRequest.headers.Authorization = `Bearer ${keycloak.token}`;
+
+            return apiClient(originalRequest);
+          } catch (refreshError) {
+            console.error('Token refresh failed', refreshError);
+            keycloak.logout();
+
+            return Promise.reject(refreshError);
+          }
+        }
+      }
+
+      return Promise.reject(customError);
+    }
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      // Only try Keycloak token refresh if keycloak is authenticated
+      if (keycloak.authenticated) {
         try {
           await keycloak.updateToken(30);
           tokenStorage.setToken(keycloak.token!, keycloak.refreshToken);
@@ -74,26 +101,6 @@ apiClient.interceptors.response.use(
 
           return Promise.reject(refreshError);
         }
-      }
-
-      return Promise.reject(customError);
-    }
-
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      try {
-        await keycloak.updateToken(30);
-        tokenStorage.setToken(keycloak.token!, keycloak.refreshToken);
-
-        originalRequest.headers.Authorization = `Bearer ${keycloak.token}`;
-
-        return apiClient(originalRequest);
-      } catch (refreshError) {
-        console.error('Token refresh failed', refreshError);
-        keycloak.logout();
-
-        return Promise.reject(refreshError);
       }
     }
 
