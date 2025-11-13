@@ -27,7 +27,7 @@ export const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe }) => {
       <img
         src={recipe.photo}
         alt={recipe.recipeName}
-        className="w-full h-44 xs:h-48 sm:h-56 md:h-64 object-cover"
+        className="w-full h-56 xs:h-64 sm:h-80 md:h-96 object-cover"
       />
 
       <div className="p-3 sm:p-4 md:p-6 lg:p-8">

@@ -34,6 +34,7 @@ const App: React.FC = () => {
   const [willingToShop, setWillingToShop] = useState<boolean>(true);
   const [shoppingBudget, setShoppingBudget] = useState<number>(500);
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
+  const [showForm, setShowForm] = useState<boolean>(true);
 
   const { mutate: generateRecipes, data: recipes, isPending, error } = useGenerateRecipes();
 
@@ -57,6 +58,13 @@ const App: React.FC = () => {
       }
     }
   }, []);
+
+  // Hide form when recipes are generated
+  useEffect(() => {
+    if (recipes && !isPending) {
+      setShowForm(false);
+    }
+  }, [recipes, isPending]);
 
   const saveFormState = () => {
     const formState: FormState = {
@@ -119,56 +127,58 @@ const App: React.FC = () => {
       <Header />
 
       <main className="container mx-auto px-2 sm:px-3 py-3 sm:py-4 md:p-8">
-        <div className="max-w-4xl mx-auto bg-white rounded-xl md:rounded-2xl shadow-lg p-3 sm:p-4 md:p-6 lg:p-8 space-y-5 sm:space-y-6 md:space-y-8 overflow-hidden">
-          <div className="grid md:grid-cols-2 gap-5 sm:gap-6 md:gap-8">
-            <IngredientInput ingredients={ingredients} setIngredients={setIngredients} />
+        {showForm && (
+          <div className="max-w-4xl mx-auto bg-white rounded-xl md:rounded-2xl shadow-lg p-3 sm:p-4 md:p-6 lg:p-8 space-y-5 sm:space-y-6 md:space-y-8 overflow-hidden">
+            <div className="grid md:grid-cols-2 gap-5 sm:gap-6 md:gap-8">
+              <IngredientInput ingredients={ingredients} setIngredients={setIngredients} />
 
-            <RecipeOptions
-              mealType={mealType}
-              setMealType={setMealType}
-              cookingTime={cookingTime}
-              setCookingTime={setCookingTime}
-              preferences={preferences}
-              setPreferences={setPreferences}
-              dietaryNeeds={dietaryNeeds}
-              setDietaryNeeds={setDietaryNeeds}
-            />
-          </div>
-
-          <BudgetInput
-            willingToShop={willingToShop}
-            setWillingToShop={setWillingToShop}
-            shoppingBudget={shoppingBudget}
-            setShoppingBudget={setShoppingBudget}
-          />
-
-          <div className="text-center">
-            <button
-              onClick={handleGenerateRecipe}
-              disabled={isPending || ingredients.length === 0}
-              className="inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-bold text-base md:text-lg rounded-full shadow-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 md:focus:ring-4 focus:ring-green-300 w-full sm:w-auto max-w-full"
-            >
-              <ChefHat className="w-5 h-5 md:w-6 md:h-6" />
-
-              {isPending ? 'Творим волшебство...' : 'Создать 3 рецепта'}
-            </button>
-          </div>
-
-          {error && (
-            <div className="text-center text-red-600 bg-red-100 p-3 sm:p-4 rounded-lg text-sm md:text-base">
-              {error.message || 'Произошла ошибка при генерации рецептов'}
+              <RecipeOptions
+                mealType={mealType}
+                setMealType={setMealType}
+                cookingTime={cookingTime}
+                setCookingTime={setCookingTime}
+                preferences={preferences}
+                setPreferences={setPreferences}
+                dietaryNeeds={dietaryNeeds}
+                setDietaryNeeds={setDietaryNeeds}
+              />
             </div>
-          )}
-        </div>
+
+            <BudgetInput
+              willingToShop={willingToShop}
+              setWillingToShop={setWillingToShop}
+              shoppingBudget={shoppingBudget}
+              setShoppingBudget={setShoppingBudget}
+            />
+
+            <div className="text-center">
+              <button
+                onClick={handleGenerateRecipe}
+                disabled={isPending || ingredients.length === 0}
+                className="inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-bold text-base md:text-lg rounded-full shadow-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 md:focus:ring-4 focus:ring-green-300 w-full sm:w-auto max-w-full"
+              >
+                <ChefHat className="w-5 h-5 md:w-6 md:h-6" />
+
+                {isPending ? 'Творим волшебство...' : 'Создать 3 рецепта'}
+              </button>
+            </div>
+
+            {error && (
+              <div className="text-center text-red-600 bg-red-100 p-3 sm:p-4 rounded-lg text-sm md:text-base">
+                {error.message || 'Произошла ошибка при генерации рецептов'}
+              </div>
+            )}
+          </div>
+        )}
 
         {showAuthModal && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
             <div className="w-full max-w-[90vw] sm:max-w-md bg-white rounded-xl md:rounded-2xl p-5 sm:p-6 md:p-8 shadow-xl">
               <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4 text-center">
-                Требуется авторизация
+                Требуется аутентификация
               </h2>
               <p className="text-sm sm:text-base text-gray-600 mb-5 sm:mb-6 text-center leading-relaxed">
-                Чтобы сгенерировать рецепт вам необходимо авторизоваться
+                Чтобы сгенерировать рецепт вам необходимо аутентифицироваться
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <button
@@ -181,7 +191,7 @@ const App: React.FC = () => {
                   onClick={handleConfirmAuth}
                   className="flex-1 px-4 py-2.5 sm:py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 active:bg-green-800 transition-colors text-sm sm:text-base shadow-lg"
                 >
-                  Авторизоваться
+                  Аутентифицироваться
                 </button>
               </div>
             </div>
@@ -199,8 +209,19 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {recipes && !isPending && (
-          <RecipeCarousel recipes={recipes} availableIngredients={ingredients} />
+        {recipes && !isPending && !showForm && (
+          <div className="space-y-4 sm:space-y-6">
+            <div className="max-w-4xl mx-auto px-2 sm:px-3 md:px-4">
+              <button
+                onClick={() => setShowForm(true)}
+                className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 bg-white text-green-600 border-2 border-green-600 font-semibold text-sm sm:text-base rounded-full shadow-md hover:bg-green-50 active:bg-green-100 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300"
+              >
+                <ChefHat className="w-4 h-4 sm:w-5 sm:h-5" />
+                Изменить ингредиенты
+              </button>
+            </div>
+            <RecipeCarousel recipes={recipes} availableIngredients={ingredients} />
+          </div>
         )}
 
         {!recipes && !isPending && (
@@ -215,12 +236,6 @@ const App: React.FC = () => {
           </div>
         )}
       </main>
-
-      <footer className="text-center py-3 sm:py-4 md:py-6 text-[10px] sm:text-xs md:text-sm text-gray-500 px-3 sm:px-4">
-        <p className="max-w-4xl mx-auto">
-          Работает на Gemini. Разработано ведущим фронтенд-инженером мирового класса.
-        </p>
-      </footer>
     </div>
   );
 };
