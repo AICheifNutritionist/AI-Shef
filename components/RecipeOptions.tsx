@@ -60,10 +60,10 @@ export const RecipeOptions: React.FC<RecipeOptionsProps> = props => {
   };
 
   return (
-    <div className="space-y-5 md:space-y-6">
+    <div className="space-y-5 md:space-y-6 overflow-hidden">
       <div>
         <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-2">Тип блюда</h3>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 -mr-1">
           {mealTypes.map(type => (
             <button
               key={type}
@@ -80,28 +80,30 @@ export const RecipeOptions: React.FC<RecipeOptionsProps> = props => {
         </div>
       </div>
 
-      <div>
+      <div className="pr-1">
         <label
           htmlFor="cooking-time"
           className="block text-base md:text-lg font-semibold text-gray-700 mb-3"
         >
           Макс. время готовки: <span className="text-green-600 font-bold">{cookingTime} мин</span>
         </label>
-        <input
-          id="cooking-time"
-          type="range"
-          min="10"
-          max="120"
-          step="5"
-          value={cookingTime}
-          onChange={e => setCookingTime(Number(e.target.value))}
-          className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
-        />
+        <div className="px-1">
+          <input
+            id="cooking-time"
+            type="range"
+            min="10"
+            max="120"
+            step="5"
+            value={cookingTime}
+            onChange={e => setCookingTime(Number(e.target.value))}
+            className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
+          />
+        </div>
       </div>
 
       <div>
         <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-2">Предпочтения</h3>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 -mr-1">
           {allPreferences.map(pref => (
             <ToggleChip
               key={pref}
@@ -117,7 +119,7 @@ export const RecipeOptions: React.FC<RecipeOptionsProps> = props => {
         <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-2">
           Диетические особенности
         </h3>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 -mr-1">
           {allDietaryNeeds.map(diet => (
             <ToggleChip
               key={diet}

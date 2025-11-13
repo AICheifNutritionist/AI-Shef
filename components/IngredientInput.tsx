@@ -43,7 +43,7 @@ export const IngredientInput: React.FC<IngredientInputProps> = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 overflow-hidden">
       <h2 className="text-lg md:text-xl font-semibold text-gray-700">Что в вашем холодильнике?</h2>
       <div className="flex gap-2">
         <input
@@ -52,7 +52,7 @@ export const IngredientInput: React.FC<IngredientInputProps> = ({
           onChange={e => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="хлеб, помидоры, сыр..."
-          className="flex-grow p-3 md:p-3 text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-shadow"
+          className="flex-grow p-3 md:p-3 text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-shadow min-w-0"
         />
         <button
           onClick={handleAddIngredient}
@@ -63,7 +63,7 @@ export const IngredientInput: React.FC<IngredientInputProps> = ({
           <PlusCircle className="w-6 h-6" />
         </button>
       </div>
-      <div className="flex flex-wrap gap-2 pt-2">
+      <div className="flex flex-wrap gap-2 pt-2 -mr-1">
         {ingredients.map((ingredient, index) => (
           <div
             key={index}

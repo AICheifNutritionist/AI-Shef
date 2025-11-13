@@ -52,9 +52,9 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-gray-50 text-gray-800">
       <Header />
 
-      <main className="container mx-auto p-4 md:p-8">
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8 space-y-8">
-          <div className="grid md:grid-cols-2 gap-8">
+      <main className="container mx-auto px-3 py-4 md:p-8">
+        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 space-y-6 md:space-y-8 overflow-hidden">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             <IngredientInput ingredients={ingredients} setIngredients={setIngredients} />
 
             <RecipeOptions
@@ -80,7 +80,7 @@ const App: React.FC = () => {
             <button
               onClick={handleGenerateRecipe}
               disabled={isPending || ingredients.length === 0}
-              className="inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-bold text-base md:text-lg rounded-full shadow-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300 w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-bold text-base md:text-lg rounded-full shadow-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 md:focus:ring-4 focus:ring-green-300 w-full sm:w-auto max-w-full"
             >
               <ChefHat className="w-5 h-5 md:w-6 md:h-6" />
 

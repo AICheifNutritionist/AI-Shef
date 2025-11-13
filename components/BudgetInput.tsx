@@ -11,7 +11,7 @@ export const BudgetInput: React.FC<BudgetInputProps> = props => {
   const { willingToShop, setWillingToShop, shoppingBudget, setShoppingBudget } = props;
 
   return (
-    <div className="bg-gray-100 p-4 md:p-6 rounded-lg space-y-4 border border-gray-200">
+    <div className="bg-gray-100 p-4 md:p-6 rounded-lg space-y-4 border border-gray-200 overflow-hidden">
       <div>
         <div className="flex items-center justify-between gap-3">
           <label
@@ -48,7 +48,7 @@ export const BudgetInput: React.FC<BudgetInputProps> = props => {
       </div>
 
       {willingToShop && (
-        <div className="animate-fade-in">
+        <div className="animate-fade-in pr-1">
           <label
             htmlFor="shopping-budget"
             className="block text-sm md:text-base lg:text-lg font-semibold text-gray-700 mb-3"
@@ -57,16 +57,18 @@ export const BudgetInput: React.FC<BudgetInputProps> = props => {
             <span className="text-green-600 font-bold">{shoppingBudget} руб.</span>
           </label>
 
-          <input
-            id="shopping-budget"
-            type="range"
-            min="100"
-            max="2000"
-            step="50"
-            value={shoppingBudget}
-            onChange={e => setShoppingBudget(Number(e.target.value))}
-            className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
-          />
+          <div className="px-1">
+            <input
+              id="shopping-budget"
+              type="range"
+              min="100"
+              max="2000"
+              step="50"
+              value={shoppingBudget}
+              onChange={e => setShoppingBudget(Number(e.target.value))}
+              className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
+            />
+          </div>
         </div>
       )}
     </div>

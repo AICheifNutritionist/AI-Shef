@@ -27,12 +27,12 @@ export const RecipeCarousel: React.FC<RecipeCarouselProps> = ({
   };
 
   return (
-    <div className="mt-8 animate-fade-in max-w-4xl mx-auto">
-      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-4 md:mb-6 text-center px-4">
+    <div className="mt-8 animate-fade-in max-w-4xl mx-auto overflow-hidden">
+      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-4 md:mb-6 text-center px-3 md:px-4">
         Ваши персональные рецепты
       </h2>
 
-      <div className="flex justify-center items-center gap-2 md:gap-4 mb-4 md:mb-6 px-4">
+      <div className="flex justify-center items-center gap-2 md:gap-4 mb-4 md:mb-6 px-3 md:px-4">
         <button
           onClick={scrollLeft}
           className="bg-green-600 hover:bg-green-700 text-white rounded-full p-2 md:p-3 transition-all duration-200 hover:scale-110 shadow-lg flex-shrink-0"
@@ -57,7 +57,7 @@ export const RecipeCarousel: React.FC<RecipeCarouselProps> = ({
 
       <div
         ref={scrollContainerRef}
-        className="flex overflow-x-auto space-x-4 md:space-x-8 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-green-600 scrollbar-track-green-100 px-4"
+        className="flex overflow-x-auto space-x-4 md:space-x-8 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-green-600 scrollbar-track-green-100 px-3 md:px-4"
       >
         {recipes.map((recipe, index) => (
           <div key={index} className="flex-shrink-0 w-full snap-center">
