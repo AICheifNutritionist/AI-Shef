@@ -30,3 +30,7 @@ View your app in AI Studio: https://ai.studio/apps/drive/1u_FB_Fq67neyJLAmoX7-za
 ### Pre-commit хук
 
 При каждом коммите автоматически запускается форматирование измененных файлов через husky + lint-staged. Для поддержания единого стиля кода.
+
+* Презентация: https://drive.google.com/file/d/1qxQFwYvCyki4ylDopUnf4KEKweylBo8L/view?usp=sharing
+* Видео: https://drive.google.com/file/d/1V5UxmEXk7JzzRsqdrxPfbSvVuCEuzkyZ/view?usp=sharing
+
