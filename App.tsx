@@ -52,9 +52,9 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-gray-50 text-gray-800">
       <Header />
 
-      <main className="container mx-auto px-3 py-4 md:p-8">
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 space-y-6 md:space-y-8 overflow-hidden">
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+      <main className="container mx-auto px-2 sm:px-3 py-3 sm:py-4 md:p-8">
+        <div className="max-w-4xl mx-auto bg-white rounded-xl md:rounded-2xl shadow-lg p-3 sm:p-4 md:p-6 lg:p-8 space-y-5 sm:space-y-6 md:space-y-8 overflow-hidden">
+          <div className="grid md:grid-cols-2 gap-5 sm:gap-6 md:gap-8">
             <IngredientInput ingredients={ingredients} setIngredients={setIngredients} />
 
             <RecipeOptions
@@ -89,17 +89,19 @@ const App: React.FC = () => {
           </div>
 
           {error && (
-            <div className="text-center text-red-600 bg-red-100 p-4 rounded-lg">
+            <div className="text-center text-red-600 bg-red-100 p-3 sm:p-4 rounded-lg text-sm md:text-base">
               {error.message || 'Произошла ошибка при генерации рецептов'}
             </div>
           )}
         </div>
 
         {isPending && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="w-full max-w-md aspect-square bg-white rounded-lg p-6 md:p-8 shadow-xl">
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
+            <div className="w-full max-w-[90vw] sm:max-w-md aspect-square bg-white rounded-xl md:rounded-2xl p-4 sm:p-6 md:p-8 shadow-xl">
               <Loader />
-              <p className="text-center text-gray-600 mt-4 font-medium">Генерируем рецепты...</p>
+              <p className="text-center text-gray-600 mt-2 sm:mt-4 font-medium text-sm sm:text-base">
+                Генерируем рецепты...
+              </p>
             </div>
           </div>
         )}
@@ -109,18 +111,22 @@ const App: React.FC = () => {
         )}
 
         {!recipes && !isPending && (
-          <div className="text-center py-12 md:py-16 text-gray-400 max-w-4xl mx-auto px-4">
-            <p className="text-lg md:text-xl mb-2">Ваши кулинарные шедевры ждут...</p>
+          <div className="text-center py-8 sm:py-12 md:py-16 text-gray-400 max-w-4xl mx-auto px-3 sm:px-4">
+            <p className="text-base sm:text-lg md:text-xl mb-1 sm:mb-2">
+              Ваши кулинарные шедевры ждут...
+            </p>
 
-            <p className="text-sm md:text-base">
+            <p className="text-xs sm:text-sm md:text-base">
               Добавьте ингредиенты, и наш AI-шеф предложит вам несколько идей!
             </p>
           </div>
         )}
       </main>
 
-      <footer className="text-center py-4 md:py-6 text-xs md:text-sm text-gray-500 px-4">
-        <p>Работает на Gemini. Разработано ведущим фронтенд-инженером мирового класса.</p>
+      <footer className="text-center py-3 sm:py-4 md:py-6 text-[10px] sm:text-xs md:text-sm text-gray-500 px-3 sm:px-4">
+        <p className="max-w-4xl mx-auto">
+          Работает на Gemini. Разработано ведущим фронтенд-инженером мирового класса.
+        </p>
       </footer>
     </div>
   );

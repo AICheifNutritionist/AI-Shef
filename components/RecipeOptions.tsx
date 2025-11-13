@@ -29,10 +29,10 @@ const ToggleChip: React.FC<{ label: string; isSelected: boolean; onToggle: () =>
 }) => (
   <button
     onClick={onToggle}
-    className={`px-3 md:px-4 py-2 md:py-2 text-xs md:text-sm font-medium rounded-full border transition-all duration-200 min-h-[40px] ${
+    className={`px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs md:text-sm font-medium rounded-full border transition-all duration-200 min-h-[36px] sm:min-h-[40px] active:scale-95 ${
       isSelected
-        ? 'bg-green-600 text-white border-green-600'
-        : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-100'
+        ? 'bg-green-600 text-white border-green-600 shadow-sm'
+        : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-100 active:bg-gray-200'
     }`}
   >
     {label}
@@ -60,18 +60,20 @@ export const RecipeOptions: React.FC<RecipeOptionsProps> = props => {
   };
 
   return (
-    <div className="space-y-5 md:space-y-6 overflow-hidden">
+    <div className="space-y-4 sm:space-y-5 md:space-y-6 overflow-hidden">
       <div>
-        <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-2">Тип блюда</h3>
-        <div className="flex flex-wrap gap-2 -mr-1">
+        <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-700 mb-1.5 sm:mb-2">
+          Тип блюда
+        </h3>
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 -mr-1">
           {mealTypes.map(type => (
             <button
               key={type}
               onClick={() => setMealType(type)}
-              className={`px-3 md:px-4 py-2 md:py-2 text-xs md:text-sm font-semibold rounded-lg transition-colors min-h-[40px] ${
+              className={`px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs md:text-sm font-semibold rounded-lg transition-all duration-200 min-h-[36px] sm:min-h-[40px] active:scale-95 ${
                 mealType === type
-                  ? 'bg-green-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ? 'bg-green-600 text-white shadow-sm'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300 active:bg-gray-400'
               }`}
             >
               {type}
@@ -83,9 +85,11 @@ export const RecipeOptions: React.FC<RecipeOptionsProps> = props => {
       <div className="pr-1">
         <label
           htmlFor="cooking-time"
-          className="block text-base md:text-lg font-semibold text-gray-700 mb-3"
+          className="block text-sm sm:text-base md:text-lg font-semibold text-gray-700 mb-2 sm:mb-3"
         >
-          Макс. время готовки: <span className="text-green-600 font-bold">{cookingTime} мин</span>
+          <span className="hidden sm:inline">Макс. время готовки: </span>
+          <span className="sm:hidden">Время: </span>
+          <span className="text-green-600 font-bold">{cookingTime} мин</span>
         </label>
         <div className="px-1">
           <input
@@ -96,14 +100,16 @@ export const RecipeOptions: React.FC<RecipeOptionsProps> = props => {
             step="5"
             value={cookingTime}
             onChange={e => setCookingTime(Number(e.target.value))}
-            className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
+            className="w-full h-3 sm:h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
           />
         </div>
       </div>
 
       <div>
-        <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-2">Предпочтения</h3>
-        <div className="flex flex-wrap gap-2 -mr-1">
+        <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-700 mb-1.5 sm:mb-2">
+          Предпочтения
+        </h3>
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 -mr-1">
           {allPreferences.map(pref => (
             <ToggleChip
               key={pref}
@@ -116,10 +122,10 @@ export const RecipeOptions: React.FC<RecipeOptionsProps> = props => {
       </div>
 
       <div>
-        <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-2">
-          Диетические особенности
+        <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-700 mb-1.5 sm:mb-2">
+          Диет. особенности
         </h3>
-        <div className="flex flex-wrap gap-2 -mr-1">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 -mr-1">
           {allDietaryNeeds.map(diet => (
             <ToggleChip
               key={diet}
