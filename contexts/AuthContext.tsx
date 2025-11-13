@@ -77,8 +77,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               picture: userData.picture,
             });
           }
-        } else {
-          keycloak.login();
         }
       } catch (error) {
         console.error('Keycloak initialization failed', error);

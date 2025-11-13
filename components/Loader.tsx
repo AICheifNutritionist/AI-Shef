@@ -26,14 +26,14 @@ export const Loader: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center py-16 space-y-4 text-center">
+    <div className="flex flex-col items-center justify-center py-8 sm:py-12 md:py-16 space-y-3 sm:space-y-4 text-center px-4">
       <div className="relative">
-        <ChefHat className="w-16 h-16 text-green-500 animate-bounce" />
+        <ChefHat className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-green-500 animate-bounce" />
       </div>
-      <p className="text-lg font-semibold text-gray-700 transition-opacity duration-500">
+      <p className="text-sm sm:text-base md:text-lg font-semibold text-gray-700 transition-opacity duration-500 max-w-xs leading-tight">
         {message}
       </p>
-      <div className="w-48 h-2 bg-gray-200 rounded-full overflow-hidden">
+      <div className="w-36 sm:w-44 md:w-48 h-1.5 sm:h-2 bg-gray-200 rounded-full overflow-hidden">
         <div className="h-full bg-green-500 rounded-full animate-loader-progress"></div>
       </div>
       <style>{`

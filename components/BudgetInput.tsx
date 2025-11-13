@@ -11,21 +11,24 @@ export const BudgetInput: React.FC<BudgetInputProps> = props => {
   const { willingToShop, setWillingToShop, shoppingBudget, setShoppingBudget } = props;
 
   return (
-    <div className="bg-gray-100 p-6 rounded-lg space-y-4 border border-gray-200">
+    <div className="bg-gray-100 p-3 sm:p-4 md:p-6 rounded-lg space-y-3 sm:space-y-4 border border-gray-200 overflow-hidden">
       <div>
-        <div className="flex items-center justify-between">
-          <label htmlFor="willing-to-shop" className="text-lg font-semibold text-gray-700">
+        <div className="flex items-center justify-between gap-2 sm:gap-3">
+          <label
+            htmlFor="willing-to-shop"
+            className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-gray-700 leading-tight"
+          >
             Готовы заказать недостающие продукты?
           </label>
 
           <div
             onClick={() => setWillingToShop(!willingToShop)}
-            className={`relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer transition-colors ${willingToShop ? 'bg-green-600' : 'bg-gray-300'}`}
+            className={`relative inline-flex items-center h-6 sm:h-7 md:h-8 rounded-full w-11 sm:w-12 md:w-14 cursor-pointer transition-colors flex-shrink-0 ${willingToShop ? 'bg-green-600' : 'bg-gray-300'}`}
             role="switch"
             aria-checked={willingToShop}
           >
             <span
-              className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${willingToShop ? 'translate-x-6' : 'translate-x-1'}`}
+              className={`inline-block w-4 sm:w-5 md:w-6 h-4 sm:h-5 md:h-6 transform bg-white rounded-full transition-transform ${willingToShop ? 'translate-x-6 sm:translate-x-6 md:translate-x-7' : 'translate-x-1'}`}
             />
           </div>
 
@@ -38,32 +41,35 @@ export const BudgetInput: React.FC<BudgetInputProps> = props => {
           />
         </div>
 
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-[10px] sm:text-xs md:text-sm text-gray-500 mt-1.5 sm:mt-2 leading-tight">
           AI-шеф сможет предложить более интересные рецепты, если ему можно добавить 1-2 новых
           ингредиента.
         </p>
       </div>
 
       {willingToShop && (
-        <div className="animate-fade-in">
+        <div className="animate-fade-in pr-1">
           <label
             htmlFor="shopping-budget"
-            className="block text-lg font-semibold text-gray-700 mb-2"
+            className="block text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-gray-700 mb-2 sm:mb-3"
           >
-            Макс. бюджет на докупку:{' '}
+            <span className="hidden sm:inline">Макс. бюджет на докупку: </span>
+            <span className="sm:hidden">Бюджет: </span>
             <span className="text-green-600 font-bold">{shoppingBudget} руб.</span>
           </label>
 
-          <input
-            id="shopping-budget"
-            type="range"
-            min="100"
-            max="2000"
-            step="50"
-            value={shoppingBudget}
-            onChange={e => setShoppingBudget(Number(e.target.value))}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
-          />
+          <div className="px-1">
+            <input
+              id="shopping-budget"
+              type="range"
+              min="100"
+              max="2000"
+              step="50"
+              value={shoppingBudget}
+              onChange={e => setShoppingBudget(Number(e.target.value))}
+              className="w-full h-3 sm:h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
+            />
+          </div>
         </div>
       )}
     </div>

@@ -7,7 +7,7 @@ export const UserProfile: React.FC = () => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-1.5 sm:gap-2 md:gap-4">
       {user && (
         <div
           className="relative"
@@ -17,10 +17,16 @@ export const UserProfile: React.FC = () => {
           <Avatar picture={user.picture} name={user.name} username={user.username} />
 
           {showTooltip && (
-            <div className="absolute right-0 top-12 bg-gray-800 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap z-50 shadow-lg">
-              <div className="font-medium">{user.name || user.username || 'Пользователь'}</div>
+            <div className="absolute right-0 top-11 sm:top-12 md:top-14 bg-gray-800 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs md:text-sm whitespace-nowrap z-50 shadow-lg">
+              <div className="font-medium leading-tight">
+                {user.name || user.username || 'Пользователь'}
+              </div>
 
-              {user.email && <div className="text-xs text-gray-300">{user.email}</div>}
+              {user.email && (
+                <div className="text-[9px] sm:text-xs text-gray-300 leading-tight">
+                  {user.email}
+                </div>
+              )}
 
               <div className="absolute -top-1 right-4 w-2 h-2 bg-gray-800 transform rotate-45" />
             </div>
@@ -30,7 +36,7 @@ export const UserProfile: React.FC = () => {
 
       <button
         onClick={logout}
-        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
+        className="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 active:bg-green-800 transition-colors text-[11px] sm:text-xs md:text-sm font-medium min-h-[36px] sm:min-h-[40px]"
       >
         Выйти
       </button>
