@@ -225,7 +225,7 @@ const App: React.FC = () => {
         )}
 
         {!recipes && !isPending && (
-          <div className="text-center py-8 sm:py-12 md:py-16 text-gray-400 max-w-4xl mx-auto px-3 sm:px-4">
+          <footer className="text-center py-8 sm:py-12 md:py-16 text-gray-400 max-w-4xl mx-auto px-3 sm:px-4">
             <p className="text-base sm:text-lg md:text-xl mb-1 sm:mb-2">
               Ваши кулинарные шедевры ждут...
             </p>
@@ -233,7 +233,7 @@ const App: React.FC = () => {
             <p className="text-xs sm:text-sm md:text-base">
               Добавьте ингредиенты, и наш AI-шеф предложит вам несколько идей!
             </p>
-          </div>
+          </footer>
         )}
       </main>
     </div>
