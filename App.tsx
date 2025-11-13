@@ -23,7 +23,7 @@ interface FormState {
 
 // TODO: вынести в page м перенести сюда провайдеры
 const App: React.FC = () => {
-  const { isAuthenticated, isLoading: authLoading, login } = useAuth();
+  const { isAuthenticated, isLoading: authLoading, isTelegramAuth, login } = useAuth();
   // TODO: переписать это на работу с формой и обработать ошибки
   // TODO: Убрать предустановки в словари
   const [ingredients, setIngredients] = useState<string[]>(['куриная грудка', 'рис', 'брокколи']);
@@ -84,9 +84,22 @@ const App: React.FC = () => {
       return;
     }
 
-    // Check if user is authenticated
+    // Для Telegram пользователей - авторизация уже есть, сразу генерируем рецепты
+    if (isTelegramAuth) {
+      generateRecipes({
+        ingredients,
+        mealType,
+        cookingTime,
+        preferences,
+        dietaryNeeds,
+        willingToShop,
+        shoppingBudget,
+      });
+      return;
+    }
+
+    // Для обычных пользователей - проверяем авторизацию через Keycloak
     if (!isAuthenticated) {
-      // Show auth modal instead of immediately redirecting
       setShowAuthModal(true);
       return;
     }

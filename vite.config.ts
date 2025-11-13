@@ -14,6 +14,7 @@ export default defineConfig(({ mode }) => {
       hmr: {
         clientPort: 3000,
       },
+      allowedHosts: ['.loca.lt', 'localhost'],
     },
     plugins: [react()],
     define: {
