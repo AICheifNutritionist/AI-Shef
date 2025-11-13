@@ -10,10 +10,13 @@ import React, {
 import keycloak from '../config/keycloak';
 import tokenStorage from '../utils/tokenStorage';
 import { getUserFromToken } from '../utils/tokenDecoder';
+import { isTelegramMiniApp, getTelegramUser, initTelegramMiniApp } from '../utils/telegram';
+import { authenticateWithTelegram, refreshTelegramToken } from '../services/telegramAuth';
 
 interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
+  isTelegramAuth: boolean;
   user: {
     name?: string;
     email?: string;
@@ -36,6 +39,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<AuthContextType['user']>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [isTelegramAuth, setIsTelegramAuth] = useState(false);
   const initialized = useRef(false);
 
   const logout = useCallback(() => {
@@ -43,52 +47,103 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsAuthenticated(false);
     setUser(null);
     setToken(null);
-    keycloak.logout();
-  }, []);
+
+    if (!isTelegramAuth) {
+      keycloak.logout();
+    }
+  }, [isTelegramAuth]);
 
   const login = useCallback(() => {
-    keycloak.login();
-  }, []);
+    if (!isTelegramAuth && keycloak) {
+      keycloak.login();
+    }
+  }, [isTelegramAuth]);
 
   useEffect(() => {
     if (initialized.current) return;
     initialized.current = true;
 
-    const initKeycloak = async () => {
-      try {
-        const authenticated = await keycloak.init({
-          onLoad: 'check-sso',
-          checkLoginIframe: false,
-          pkceMethod: 'S256',
-          responseMode: 'fragment',
+    const initAuth = async () => {
+      const telegramUser = getTelegramUser();
+
+      if (isTelegramMiniApp() && telegramUser) {
+        initTelegramMiniApp();
+
+        try {
+          const authResponse = await authenticateWithTelegram();
+          tokenStorage.setToken(authResponse.access_token, authResponse.refresh_token);
+          setToken(authResponse.access_token);
+        } catch (error) {
+          const telegramToken = `tg_${telegramUser.id}_${Date.now()}`;
+          tokenStorage.setToken(telegramToken);
+          setToken(telegramToken);
+        }
+
+        setIsAuthenticated(true);
+        setIsTelegramAuth(true);
+        setUser({
+          name: `${telegramUser.first_name}${telegramUser.last_name ? ' ' + telegramUser.last_name : ''}`,
+          username: telegramUser.username || telegramUser.id.toString(),
+          picture: telegramUser.photo_url,
         });
 
-        if (authenticated && keycloak.token) {
-          tokenStorage.setToken(keycloak.token, keycloak.refreshToken);
-          setIsAuthenticated(true);
-          setToken(keycloak.token);
-
-          const userData = getUserFromToken(keycloak.token);
-          if (userData) {
-            setUser({
-              name: userData.name,
-              email: userData.email,
-              username: userData.username,
-              picture: userData.picture,
-            });
-          }
-        }
-      } catch (error) {
-        console.error('Keycloak initialization failed', error);
-      } finally {
         setIsLoading(false);
+        return;
       }
+
+      const initKeycloak = async () => {
+        try {
+          const authenticated = await keycloak.init({
+            onLoad: 'check-sso',
+            checkLoginIframe: false,
+            pkceMethod: 'S256',
+            responseMode: 'fragment',
+          });
+
+          if (authenticated && keycloak.token) {
+            tokenStorage.setToken(keycloak.token, keycloak.refreshToken);
+            setIsAuthenticated(true);
+            setToken(keycloak.token);
+            setIsTelegramAuth(false);
+
+            const userData = getUserFromToken(keycloak.token);
+            if (userData) {
+              setUser({
+                name: userData.name,
+                email: userData.email,
+                username: userData.username,
+                picture: userData.picture,
+              });
+            }
+          }
+        } catch (error) {
+          console.error('Keycloak initialization failed', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      await initKeycloak();
     };
 
-    initKeycloak();
+    initAuth();
 
     const tokenRefreshInterval = setInterval(async () => {
-      if (keycloak.authenticated) {
+      if (isTelegramAuth) {
+        const storedRefreshToken = tokenStorage.getRefreshToken();
+        if (storedRefreshToken) {
+          try {
+            const authResponse = await refreshTelegramToken(storedRefreshToken);
+            if (authResponse.access_token) {
+              tokenStorage.setToken(authResponse.access_token, authResponse.refresh_token);
+              setToken(authResponse.access_token);
+            }
+          } catch (error) {
+            console.error('Failed to refresh Telegram token', error);
+            logout();
+          }
+        }
+      } else if (keycloak.authenticated) {
         try {
           const refreshed = await keycloak.updateToken(30);
           if (refreshed && keycloak.token) {
@@ -96,7 +151,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setToken(keycloak.token);
           }
         } catch (error) {
-          console.error('Failed to refresh token', error);
+          console.error('Failed to refresh Keycloak token', error);
           logout();
         }
       }
@@ -112,6 +167,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       value={{
         isAuthenticated,
         isLoading,
+        isTelegramAuth,
         user,
         token,
         logout,

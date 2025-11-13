@@ -23,7 +23,7 @@ interface FormState {
 
 // TODO: вынести в page м перенести сюда провайдеры
 const App: React.FC = () => {
-  const { isAuthenticated, isLoading: authLoading, login } = useAuth();
+  const { isAuthenticated, isLoading: authLoading, isTelegramAuth, login } = useAuth();
   // TODO: переписать это на работу с формой и обработать ошибки
   // TODO: Убрать предустановки в словари
   const [ingredients, setIngredients] = useState<string[]>(['куриная грудка', 'рис', 'брокколи']);
@@ -84,9 +84,22 @@ const App: React.FC = () => {
       return;
     }
 
-    // Check if user is authenticated
+    // Для Telegram пользователей - авторизация уже есть, сразу генерируем рецепты
+    if (isTelegramAuth) {
+      generateRecipes({
+        ingredients,
+        mealType,
+        cookingTime,
+        preferences,
+        dietaryNeeds,
+        willingToShop,
+        shoppingBudget,
+      });
+      return;
+    }
+
+    // Для обычных пользователей - проверяем авторизацию через Keycloak
     if (!isAuthenticated) {
-      // Show auth modal instead of immediately redirecting
       setShowAuthModal(true);
       return;
     }
@@ -225,7 +238,7 @@ const App: React.FC = () => {
         )}
 
         {!recipes && !isPending && (
-          <div className="text-center py-8 sm:py-12 md:py-16 text-gray-400 max-w-4xl mx-auto px-3 sm:px-4">
+          <footer className="text-center py-8 sm:py-12 md:py-16 text-gray-400 max-w-4xl mx-auto px-3 sm:px-4">
             <p className="text-base sm:text-lg md:text-xl mb-1 sm:mb-2">
               Ваши кулинарные шедевры ждут...
             </p>
@@ -233,7 +246,7 @@ const App: React.FC = () => {
             <p className="text-xs sm:text-sm md:text-base">
               Добавьте ингредиенты, и наш AI-шеф предложит вам несколько идей!
             </p>
-          </div>
+          </footer>
         )}
       </main>
     </div>
