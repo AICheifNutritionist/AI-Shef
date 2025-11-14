@@ -39,6 +39,6 @@ View your app in AI Studio: https://ai.studio/apps/drive/1u_FB_Fq67neyJLAmoX7-za
 
 Проект задуман как первый шаг к полноценному «умному холодильнику», который автоматически отслеживает запасы, сроки годности и предлагает меню на неделю, экономя время, деньги и продукты.
 
-* Презентация: https://drive.google.com/file/d/1qxQFwYvCyki4ylDopUnf4KEKweylBo8L/view?usp=sharing
+* Презентация: https://drive.google.com/file/d/13dEc53Ja4_Rzgx8im6nPeCeuhmf9etlq/view?usp=sharing
 * Видео: https://drive.google.com/file/d/1V5UxmEXk7JzzRsqdrxPfbSvVuCEuzkyZ/view?usp=sharing
 
