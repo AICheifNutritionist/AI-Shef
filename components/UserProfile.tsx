@@ -3,7 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Avatar } from './Avatar';
 
 export const UserProfile: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, isTelegramAuth } = useAuth();
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
@@ -34,12 +34,14 @@ export const UserProfile: React.FC = () => {
         </div>
       )}
 
-      <button
-        onClick={logout}
-        className="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 active:bg-green-800 transition-colors text-[11px] sm:text-xs md:text-sm font-medium min-h-[36px] sm:min-h-[40px]"
-      >
-        Выйти
-      </button>
+      {!isTelegramAuth && (
+        <button
+          onClick={logout}
+          className="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 active:bg-green-800 transition-colors text-[11px] sm:text-xs md:text-sm font-medium min-h-[36px] sm:min-h-[40px]"
+        >
+          Выйти
+        </button>
+      )}
     </div>
   );
 };
