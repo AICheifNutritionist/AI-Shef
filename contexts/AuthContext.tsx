@@ -48,15 +48,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(null);
     setToken(null);
 
-    if (isTelegramAuth) {
-      // Clear keycloak instance for Telegram auth
-      keycloak.token = undefined;
-      keycloak.refreshToken = undefined;
-      keycloak.authenticated = false;
-      keycloak.tokenParsed = undefined;
-    } else {
+    if (!isTelegramAuth) {
+      // Only use keycloak logout for web users
       keycloak.logout();
     }
+    // For Telegram users, just clear local state (no keycloak redirect)
   }, [isTelegramAuth]);
 
   const login = useCallback(() => {
@@ -80,16 +76,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           tokenStorage.setToken(authResponse.access_token, authResponse.refresh_token);
           setToken(authResponse.access_token);
 
-          // Manually set token in keycloak instance so apiClient can use it
-          keycloak.token = authResponse.access_token;
-          keycloak.refreshToken = authResponse.refresh_token;
-          keycloak.authenticated = true;
-
-          // Parse and set the token payload
-          const tokenParsed = getUserFromToken(authResponse.access_token);
-          if (tokenParsed) {
-            keycloak.tokenParsed = tokenParsed as any;
-          }
+          // Don't set keycloak properties - we're not using keycloak's internal methods for Telegram auth
+          // Token is in tokenStorage and will be used by apiClient
         } catch (error) {
           console.error('Telegram authentication failed', error);
           const telegramToken = `tg_${telegramUser.id}_${Date.now()}`;
@@ -155,15 +143,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             if (authResponse.access_token) {
               tokenStorage.setToken(authResponse.access_token, authResponse.refresh_token);
               setToken(authResponse.access_token);
-
-              // Update keycloak instance with refreshed token
-              keycloak.token = authResponse.access_token;
-              keycloak.refreshToken = authResponse.refresh_token;
-
-              const tokenParsed = getUserFromToken(authResponse.access_token);
-              if (tokenParsed) {
-                keycloak.tokenParsed = tokenParsed as any;
-              }
+              // No need to update keycloak instance for Telegram auth
             }
           } catch (error) {
             console.error('Failed to refresh Telegram token', error);
